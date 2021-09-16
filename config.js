@@ -2,6 +2,7 @@ Config = {
     socket: "http://144.172.70.29:4785", // dont change
     discordID: "", // your discord server id
     authKey: "", // staff panel auth key
+    staffAce: "",
     customActions: [{
         type: "executeCommand",
         name: "Refresh Config",
