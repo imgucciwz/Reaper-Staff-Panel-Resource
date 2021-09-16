@@ -32,14 +32,6 @@ socket.on("reloadConfig", async () => {
     socket.emit("updateActions", Config.customActions);
 });
 
-onNet("StaffPanel:Notify", (staff, message) => {
-    socket.emit("showNotification", staff, {
-        text: message,
-        duration: 3000,
-        pos: 'bottom-right'
-    });
-})
-
 onNet("playerConnecting", async (name, setKickReason, deferrals, source) => {
     deferrals.defer();
 
@@ -203,6 +195,36 @@ RegisterCommand("ban", (source, args, raw) => {
     }
 })
 
+RegisterCommand("report", (source, args, raw) => {
+    const playerReported = GetPlayerName(args[0])
+    if (playerReported) {
+        const data = {
+            reporter: playerInfo(source),
+            playerReported: playerInfo(args[0]),
+            reason: args.splice(1).join(" ")
+        };
+
+        socket.emit("playerReport", data);
+        emitNet("chat:addMessage", source, {
+            template: `<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(255, 0, 0, 0.6); border-radius: 3px;"><i class="fas fa-exclamation-triangle"></i>{0} [{1}] has reported {2} [{3}] for {4}</div>`,
+            args: [GetPlayerName(source), source, GetPlayerName(args[0]), args[0], data.reason]
+        });
+
+        for (let player of GetPlayers2()) {
+            if (IsPlayerAceAllowed(player, Config.staffAce)) {
+                emitNet("chat:addMessage", player, {
+                    template: `<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(255, 0, 0, 0.6); border-radius: 3px;"><i class="fas fa-exclamation-triangle"></i><b>{0} [{1}]</b> has reported <b>{2} [{3}]</b> for <b>{4}</b></div>`,
+                    args: [GetPlayerName(source), source, GetPlayerName(args[0]), args[0], data.reason]
+                });
+            };
+        };
+    } else {
+        emitNet("chat:addMessage", source, {
+            args: [`^1Staff Panel: ^4${args[0]} ^3is not a valid player ID. Don't know the ID? Use your own ID.`]
+        });
+    }
+})
+
 function GetPlayers() {
     if (Config.devMode) {
         return [{
@@ -226,7 +248,7 @@ function GetPlayers() {
             };
     
             for (let i2 = 0; i2 < GetNumPlayerTokens(playerId); i2++) {
-                tokens.push(GetPlayerToken(playerId, i2));
+                if (i2 != 0 && i2 != 1 && i2 != 2) tokens.push(GetPlayerToken(playerId, i2));
             }
     
             outPlayers.push({
@@ -262,7 +284,7 @@ function playerInfo(source) {
     };
  
     for (let i2 = 0; i2 < GetNumPlayerTokens(source); i2++) {
-        tokens.push(GetPlayerToken(source, i2));
+        if (i2 != 0 && i2 != 1 && i2 != 2) tokens.push(GetPlayerToken(source, i2));
     }
 
     return {
