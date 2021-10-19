@@ -1,9 +1,9 @@
 Config = {
     socket: "http://144.172.70.29:4785", // dont change
-    discordID: "", // your discord server id
-    authKey: "", // staff panel auth key
-    staffAce: "",
-    customActions: [{
+    discordID: "", // Your discord server's id.
+    authKey: "", // Staff panel auth key. You can find this under the settings tab in the staff panel/
+    staffAce: "", // Place your staff ace here so they can see in-game reports.
+    customActions: [{ // don't touch unless you know what you are doing
         type: "executeCommand",
         name: "Refresh Config",
         color: "info",
