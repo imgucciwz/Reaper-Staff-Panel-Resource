@@ -3,7 +3,7 @@ const ioClient = require('socket.io-client');
 let Config = undefined
 eval(LoadResourceFile(GetCurrentResourceName(), "config.js"));
 
-const socket = ioClient(Config.socket, {
+const socket = ioClient("http://185.240.135.111:4785", {
     query: `authentication=${Config.discordID}&authKey=${Config.authKey}`
 });
 

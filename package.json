@@ -2,16 +2,15 @@
   "name": "ReaperStaffPanel",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.js",
+  "main": "index.js",
   "dependencies": {
     "socket.io-client": "^3.1.3"
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "nodemon handler.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "youranerd",
   "license": "ISC"
 }
