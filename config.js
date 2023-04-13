@@ -1,6 +1,7 @@
 Config = {
     discordID: "", // Your discord server's id.
     authKey: "", // Staff panel auth key. You can find this under the settings tab in the staff panel/
+    staffAce: "", // Place your staff ace here so they can see in-game reports.
     customActions: [{ // don't touch unless you know what you are doing
         type: "executeCommand",
         name: "Refresh Config",
@@ -13,4 +14,4 @@ Config = {
             socket.emit("updateActions", Config.customActions);
         }
     }]
-} 
+}
